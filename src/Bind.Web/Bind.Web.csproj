@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bind.Application\Bind.Application.csproj" />
+    <ProjectReference Include="..\Bind.Contracts\Bind.Contracts.csproj" />
     <ProjectReference Include="..\Bind.Infrastructure\Bind.Infrastructure.csproj" />
   </ItemGroup>
 
