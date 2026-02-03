@@ -1,4 +1,4 @@
-namespace Bind.Api;
+namespace Bind.Web;
 
 public class WeatherForecast
 {
