@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bind.Infrastructure.Persistence.Ef;
 
-public class PlayerDbContext(DbContextOptions<PlayerDbContext> options)
-    : DbContext(options), IUnitOfWork
+public class PlayerDbContext(DbContextOptions<PlayerDbContext> options) : DbContext(options), IUnitOfWork
 {
     public DbSet<Player> Players => Set<Player>();
 
