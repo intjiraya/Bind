@@ -1,6 +1,7 @@
 using Bind.Application.Players.Interfaces;
 using Bind.Domain.Players.Aggregates;
 using Bind.Domain.Players.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bind.Infrastructure.Persistence.Ef;
 
@@ -10,7 +11,10 @@ public class PlayerRepository(PlayerDbContext context) : IPlayerRepository
         => await context.Players.FindAsync([id], ct);
 
     public async Task<Player?> GetBySteamIdAsync(SteamId steamId, CancellationToken ct) =>
-        await context.Players.FindAsync([steamId], ct);
+        await context.Players.FirstOrDefaultAsync(p => p.SteamId == steamId, ct);
+
+    public async Task<bool> ExistsAsync(SteamId steamId, CancellationToken ct)
+        => await context.Players.AnyAsync(p => p.SteamId == steamId, ct);
 
     public async Task AddAsync(Player player, CancellationToken ct)
         => await context.Players.AddAsync(player, ct);
