@@ -17,5 +17,9 @@ public static partial class Errors
         public static Error InvalidSteamId => Error.Validation(
             code: "Player.InvalidSteamId",
             description: "The provided SteamID format is incorrect.");
+
+        public static Error InvalidDiscordId => Error.Validation(
+            code: "Player.InvalidDiscordId",
+            description: "The provided DiscordID format is incorrect.");
     }
 }

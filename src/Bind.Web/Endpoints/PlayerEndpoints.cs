@@ -13,8 +13,11 @@ public static class PlayerEndpoints
 
         group.MapPost("/", async (CreatePlayerRequest request, ICreatePlayerUseCase useCase, CancellationToken ct) =>
         {
-            var steamId = new SteamId(request.SteamId);
-            var result = await useCase.ExecuteAsync(steamId, ct);
+            var steamIdResult = SteamId.Create(request.SteamId);
+            if (steamIdResult.IsError)
+                return steamIdResult.Errors.Problem();
+
+            var result = await useCase.ExecuteAsync(steamIdResult.Value, ct);
 
             return result.Match(
                 player => Results.Created($"/api/players/{player.Id}", player),

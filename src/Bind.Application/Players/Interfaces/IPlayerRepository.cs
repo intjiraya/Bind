@@ -7,6 +7,8 @@ public interface IPlayerRepository
 {
     Task<Player?> GetByIdAsync(Guid id, CancellationToken ct);
 
+    Task<Player?> GetByDiscordIdAsync(DiscordId discordId, CancellationToken ct);
+
     Task<Player?> GetBySteamIdAsync(SteamId steamId, CancellationToken ct);
 
     Task<bool> ExistsAsync(SteamId steamId, CancellationToken ct);
