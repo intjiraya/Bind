@@ -6,5 +6,5 @@ namespace Bind.Application.Players.Interfaces;
 
 public interface ICreatePlayerUseCase
 {
-    Task<ErrorOr<PlayerResponse>> ExecuteAsync(SteamId steamId, CancellationToken ct);
+    Task<ErrorOr<PlayerResponse>> ExecuteAsync(SteamId steamId, string nickname, string ip, CancellationToken ct);
 }

@@ -1,3 +1,3 @@
 namespace Bind.Contracts.Players.API;
 
-public record PlayerResponse(Guid Id, string SteamId, string? DiscordId);
+public record PlayerResponse(string PlayerId, string SteamId, string? DiscordId);

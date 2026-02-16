@@ -4,7 +4,7 @@ using ErrorOr;
 
 namespace Bind.Application.Players.Interfaces;
 
-public interface IGetPlayerBySteamIdUseCase
+public interface IGetPlayerByIdUseCase
 {
-    Task<ErrorOr<PlayerResponse>> ExecuteAsync(SteamId steamId, CancellationToken ct);
+    Task<ErrorOr<PlayerResponse>> ExecuteAsync(PlayerId playerId, CancellationToken ct);
 }

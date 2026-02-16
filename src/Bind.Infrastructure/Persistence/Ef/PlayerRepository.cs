@@ -1,4 +1,5 @@
 using Bind.Application.Players.Interfaces;
+using Bind.Application.Players.Queries;
 using Bind.Domain.Players.Aggregates;
 using Bind.Domain.Players.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -7,14 +8,19 @@ namespace Bind.Infrastructure.Persistence.Ef;
 
 public class PlayerRepository(PlayerDbContext context) : IPlayerRepository
 {
-    public async Task<Player?> GetByIdAsync(Guid id, CancellationToken ct) =>
-        await context.Players.FindAsync([id], ct);
+    public async Task<Player?> GetByFilterAsync(PlayerFilter filter, CancellationToken ct)
+    {
+        var query = context.Players.AsQueryable();
 
-    public async Task<Player?> GetByDiscordIdAsync(DiscordId discordId, CancellationToken ct) =>
-        await context.Players.FirstOrDefaultAsync(p => p.DiscordId == discordId, ct);
+        if (filter.PlayerId is not null)
+            query = query.Where(p => p.Id == filter.PlayerId.Value);
+        if (filter.SteamId is not null)
+            query = query.Where(p => p.SteamId == filter.SteamId);
+        if (filter.DiscordId is not null)
+            query = query.Where(p => p.DiscordId == filter.DiscordId);
 
-    public async Task<Player?> GetBySteamIdAsync(SteamId steamId, CancellationToken ct) =>
-        await context.Players.FirstOrDefaultAsync(p => p.SteamId == steamId, ct);
+        return await query.FirstOrDefaultAsync(ct);
+    }
 
     public async Task<bool> ExistsAsync(SteamId steamId, CancellationToken ct) =>
         await context.Players.AnyAsync(p => p.SteamId == steamId, ct);

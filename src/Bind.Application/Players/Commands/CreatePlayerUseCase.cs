@@ -10,17 +10,21 @@ namespace Bind.Application.Players.Commands;
 
 public class CreatePlayerUseCase(IPlayerRepository repository, IUnitOfWork unitOfWork) : ICreatePlayerUseCase
 {
-    public async Task<ErrorOr<PlayerResponse>> ExecuteAsync(SteamId steamId, CancellationToken ct)
+    public async Task<ErrorOr<PlayerResponse>> ExecuteAsync(
+        SteamId steamId,
+        string nickname,
+        string ip,
+        CancellationToken ct)
     {
         var isPlayerExists = await repository.ExistsAsync(steamId, ct);
         if (isPlayerExists)
             return Errors.Player.AlreadyExists;
 
-        var player = Player.Create(steamId);
+        var player = Player.Create(steamId, nickname, ip);
 
         await repository.AddAsync(player, ct);
         await unitOfWork.SaveChangesAsync(ct);
 
-        return new PlayerResponse(player.Id, player.SteamId.Value, player.DiscordId?.Value);
+        return new PlayerResponse(player.Id.ToString(), player.SteamId.Value, player.DiscordId?.Value);
     }
 }
