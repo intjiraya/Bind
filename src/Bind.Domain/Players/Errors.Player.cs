@@ -10,6 +10,10 @@ public static partial class Errors
             code: "Player.AlreadyExists",
             description: "Player with this SteamID is already registered.");
 
+        public static Error EmptyNickname => Error.Validation(
+            code: "Player.EmptyNickname",
+            description: "The provided Nickname is empty.");
+
         public static Error NotFound => Error.NotFound(
             code: "Player.NotFound",
             description: "Player with the specified ID was not found.");
