@@ -16,6 +16,11 @@ public sealed record NicknameHistoryEntry
 
     public static ErrorOr<NicknameHistoryEntry> Create(string value, DateTime changedAt)
     {
+        if (string.IsNullOrWhiteSpace(value))
+            return Errors.Player.EmptyNickname;
+
         return new NicknameHistoryEntry(value, changedAt);
     }
+
+    public override string ToString() => $"{Value} @ {ChangedAt:u}";
 }

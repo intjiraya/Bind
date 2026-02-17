@@ -1,9 +1,8 @@
 using ErrorOr;
-using static System.Text.RegularExpressions.Regex;
 
 namespace Bind.Domain.Players.ValueObjects;
 
-public sealed class SteamId
+public sealed record SteamId
 {
     public string Value { get; }
 
@@ -14,9 +13,13 @@ public sealed class SteamId
 
     public static ErrorOr<SteamId> Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || !IsMatch(value, @"^7656119(\d{10})$"))
+        if (value is not { Length: 17 }
+            || !value.StartsWith("7656119")
+            || !ulong.TryParse(value, out _))
             return Errors.Player.InvalidSteamId;
 
         return new SteamId(value);
     }
+
+    public override string ToString() => Value;
 }

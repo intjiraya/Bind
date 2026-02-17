@@ -1,5 +1,5 @@
+using System.Net;
 using ErrorOr;
-using static System.Text.RegularExpressions.Regex;
 
 namespace Bind.Domain.Players.ValueObjects;
 
@@ -17,11 +17,11 @@ public sealed record IpHistoryEntry
 
     public static ErrorOr<IpHistoryEntry> Create(string value, DateTime seenAt)
     {
-        if (string.IsNullOrWhiteSpace(value) || !IsMatch(
-                value,
-                @"^\b(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}\b$"))
+        if (!IPAddress.TryParse(value, out _))
             return Errors.Player.InvalidIpAddress;
 
         return new IpHistoryEntry(value, seenAt);
     }
+
+    public override string ToString() => $"{Value} @ {SeenAt:u}";
 }

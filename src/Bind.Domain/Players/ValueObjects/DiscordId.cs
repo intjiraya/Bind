@@ -1,9 +1,8 @@
 using ErrorOr;
-using static System.Text.RegularExpressions.Regex;
 
 namespace Bind.Domain.Players.ValueObjects;
 
-public sealed class DiscordId
+public sealed record DiscordId
 {
     public string Value { get; }
 
@@ -14,9 +13,11 @@ public sealed class DiscordId
 
     public static ErrorOr<DiscordId> Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || !IsMatch(value, @"^\d{17,20}$"))
+        if (value is not { Length: >= 17 and <= 20 } || !ulong.TryParse(value, out _))
             return Errors.Player.InvalidDiscordId;
 
         return new DiscordId(value);
     }
+
+    public override string ToString() => Value;
 }

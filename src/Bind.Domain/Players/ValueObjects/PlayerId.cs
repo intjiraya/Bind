@@ -2,7 +2,7 @@ using ErrorOr;
 
 namespace Bind.Domain.Players.ValueObjects;
 
-public sealed class PlayerId
+public sealed record PlayerId
 {
     public Guid Value { get; }
 
@@ -20,4 +20,6 @@ public sealed class PlayerId
     }
 
     public static PlayerId New() => new(Guid.NewGuid());
+
+    public override string ToString() => Value.ToString();
 }
